@@ -50,11 +50,17 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 uint16_t time_counter = 0;
-void ex1();
-void ex2();
-void ex3_4_5();
-void display7SEG(int num);
-void display7SEG2(int num);
+
+void clearAllClock();
+void setNumberOnClock(int num);
+void clearNumberOnClock(int num);
+void run_led_test();
+void turnOnAll();
+void Ex6_7_8_9_10();
+void ex6();
+void ex7();
+void ex8();
+void ex9();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -102,10 +108,11 @@ int main(void)
 
   while (1)
   {
-	  //ex1();
-	  //ex2();
-	  ex3_4_5();
-
+	  //ex6();
+	  //ex7();
+	  //ex8();
+	  //ex9();
+	  Ex6_7_8_9_10();
 
 
 
@@ -163,328 +170,205 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, a_Pin|b_Pin|c_Pin|d_Pin
-                          |LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin|LED_GREEN_2_Pin
-                          |LED_YELLOW_2_Pin|LED_RED_2_Pin|e_Pin|f_Pin
-                          |g_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
+                          |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, a2_Pin|b2_Pin|c2_Pin|d2_Pin
-                          |e2_Pin|f2_Pin|g2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : a_Pin b_Pin c_Pin d_Pin
-                           LED_RED_Pin LED_YELLOW_Pin LED_GREEN_Pin LED_GREEN_2_Pin
-                           LED_YELLOW_2_Pin LED_RED_2_Pin e_Pin f_Pin
-                           g_Pin */
-  GPIO_InitStruct.Pin = a_Pin|b_Pin|c_Pin|d_Pin
-                          |LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin|LED_GREEN_2_Pin
-                          |LED_YELLOW_2_Pin|LED_RED_2_Pin|e_Pin|f_Pin
-                          |g_Pin;
+  /*Configure GPIO pins : PA4 PA5 PA6 PA7
+                           PA8 PA9 PA10 PA11
+                           PA12 PA13 PA14 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
+                          |GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : a2_Pin b2_Pin c2_Pin d2_Pin
-                           e2_Pin f2_Pin g2_Pin */
-  GPIO_InitStruct.Pin = a2_Pin|b2_Pin|c2_Pin|d2_Pin
-                          |e2_Pin|f2_Pin|g2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
 }
 
 /* USER CODE BEGIN 4 */
-void ex1(){
-	  if (time_counter >= 0 && time_counter < 2 ){
-		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-		  // Ghi chân PA5 là 1, do PA5 nối với 3.3v ==> đèn tắt
-		  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-		// Ghi chân PA6 là 0, do PA6 nối với 3.3v ==> đèn bật
-	  }
-	  if (time_counter >= 2 && time_counter < 4 ){
-	  	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-	  	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
-	  }
-	  time_counter++;
-	  if (time_counter >= 4 ){
-		 time_counter = 0;
-	  }
-	  HAL_Delay(1000);
-}
-void ex2(){
-	  if (time_counter >= 0 && time_counter < 5 ){
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-		  // Ghi chân PA5 là 1, do PA5 nối với 3.3v ==> đèn tắt
-		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
-		// Ghi chân PA6 là 0, do PA6 nối với 3.3v ==> đèn bật
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	  }
-	  if (time_counter >= 5 && time_counter < 7 ){
-	  	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	  	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	  }
-	  if (time_counter >= 7 && time_counter < 10 ){
-	  	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-	  	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
-	    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	  }
-	  time_counter++;
-	  if (time_counter >= 10 ){
-		 time_counter = 0;
-	  }
-	  HAL_Delay(1000);
-}
-void ex3_4_5(){
-	////// �?ÈN Ở �?OẠN �?ƯỜNG THỨ 1
-	  if (time_counter >= 0 && time_counter < 5 ){//�?�?
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
-		  // Ghi chân PA5 là 1, do PA5 nối với 3.3v ==> đèn tắt
-		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-		// Ghi chân PA6 là 0, do PA6 nối với 3.3v ==> đèn bật
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-		display7SEG(4 - time_counter);
-	  }
-	  if (time_counter >= 5 && time_counter < 8 ){// Xanh
-	  	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-	  	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-	    display7SEG(7 - time_counter);
-	  }
-	  if (time_counter >= 8 && time_counter < 10 ){//Vàng
-	  	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-	  	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
-	    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-	    display7SEG(9 - time_counter);
-	  }
 
-	  /////// �?ÈN Ở �?OẠN �?ƯỜNG THỨ 2
-	  if(time_counter >= 0 && time_counter < 3){
-		  // �?èn ở đoạn đư�?ng thứ 2
-		 HAL_GPIO_WritePin(LED_RED_2_GPIO_Port, LED_RED_2_Pin, GPIO_PIN_RESET);		  // Ghi chân PA5 là 1, do PA5 nối với 3.3v ==> đèn tắt
-		 HAL_GPIO_WritePin(LED_YELLOW_2_GPIO_Port, LED_YELLOW_2_Pin, GPIO_PIN_RESET);		// Ghi chân PA6 là 0, do PA6 nối với 3.3v ==> đèn bật
-		 HAL_GPIO_WritePin(LED_GREEN_2_GPIO_Port, LED_GREEN_2_Pin, GPIO_PIN_SET);
-		 display7SEG2(2 - time_counter);
+// Mảng hằng số để ánh xạ số từ 0-11 tới các chân GPIO từ PA4-PA15
+// Cách này giúp code gọn gàng, không cần dùng if hoặc switch-case
+const uint16_t led_pins[12] = {
+    GPIO_PIN_4,  // Vị trí 0 (12 giờ)
+    GPIO_PIN_5,  // Vị trí 1
+    GPIO_PIN_6,  // Vị trí 2
+    GPIO_PIN_7,  // Vị trí 3
+    GPIO_PIN_8,  // Vị trí 4
+    GPIO_PIN_9,  // Vị trí 5
+    GPIO_PIN_10, // Vị trí 6
+    GPIO_PIN_11, // Vị trí 7
+    GPIO_PIN_12, // Vị trí 8
+    GPIO_PIN_13, // Vị trí 9
+    GPIO_PIN_14, // Vị trí 10
+    GPIO_PIN_15  // Vị trí 11
+};
 
-	  }
-	  if(time_counter >= 3 && time_counter < 5){
-		  // �?èn ở đoạn đư�?ng thứ 2
-		 HAL_GPIO_WritePin(LED_RED_2_GPIO_Port, LED_RED_2_Pin, GPIO_PIN_RESET);		  // Ghi chân PA5 là 1, do PA5 nối với 3.3v ==> đèn tắt
-		 HAL_GPIO_WritePin(LED_YELLOW_2_GPIO_Port, LED_YELLOW_2_Pin, GPIO_PIN_SET);		// Ghi chân PA6 là 0, do PA6 nối với 3.3v ==> đèn bật
-		 HAL_GPIO_WritePin(LED_GREEN_2_GPIO_Port, LED_GREEN_2_Pin, GPIO_PIN_RESET);
-		 display7SEG2(4 - time_counter);
-	  }
-	  if(time_counter >= 5 && time_counter < 10){
-		  // �?èn ở đoạn đư�?ng thứ 2
-		 HAL_GPIO_WritePin(LED_RED_2_GPIO_Port, LED_RED_2_Pin, GPIO_PIN_SET);		  // Ghi chân PA5 là 1, do PA5 nối với 3.3v ==> đèn tắt
-		 HAL_GPIO_WritePin(LED_YELLOW_2_GPIO_Port, LED_YELLOW_2_Pin, GPIO_PIN_RESET);		// Ghi chân PA6 là 0, do PA6 nối với 3.3v ==> đèn bật
-		 HAL_GPIO_WritePin(LED_GREEN_2_GPIO_Port, LED_GREEN_2_Pin, GPIO_PIN_RESET);
-		 display7SEG2(9 - time_counter);
-	  }
-	  time_counter++;
-	  if (time_counter >= 10 ){
-		 time_counter = 0;
-	  }
-	  HAL_Delay(1000);
+//-------------------------------------------------------------------
+// Exercise 7: Implement a function to turn off all 12 LEDs.
+//-------------------------------------------------------------------
+/**
+  * @brief  Tắt tất cả 12 đèn LED trên đồng hồ.
+  * @note   Sử dụng toán tử OR để gộp tất cả các chân và tắt trong một lệnh duy nhất.
+  *         GPIO_PIN_SET sẽ đưa chân lên mức cao, tắt LED (giả sử LED nối với GND).
+  * @retval None
+  */
+void clearAllClock() {
+    HAL_GPIO_WritePin(GPIOA,
+                      GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 |
+                      GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11 |
+                      GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15,
+                      GPIO_PIN_RESET);
 }
-void display7SEG(int num){
-	if (num == 0) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET); // a
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET); // b
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET); // c
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET); // d
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, RESET); // e
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, RESET); // f
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, SET);   // g
-	}
-	else if (num == 1) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, SET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, SET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, SET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, SET);
-	}
-	else if (num == 2) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, SET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, RESET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, SET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else if (num == 3) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, SET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else if (num == 4) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, SET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, SET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, RESET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else if (num == 5) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, SET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, RESET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else if (num == 6) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, SET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, RESET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, RESET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else if (num == 7) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, SET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, SET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, SET);
-	}
-	else if (num == 8) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, RESET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, RESET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else if (num == 9) {
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, RESET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, RESET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, RESET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, RESET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, RESET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, RESET);
-	}
-	else { // Mặc định tắt hết LED nếu số không hợp lệ
-		HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, SET);
-		HAL_GPIO_WritePin(b_GPIO_Port, b_Pin, SET);
-		HAL_GPIO_WritePin(c_GPIO_Port, c_Pin, SET);
-		HAL_GPIO_WritePin(d_GPIO_Port, d_Pin, SET);
-		HAL_GPIO_WritePin(e_GPIO_Port, e_Pin, SET);
-		HAL_GPIO_WritePin(f_GPIO_Port, f_Pin, SET);
-		HAL_GPIO_WritePin(g_GPIO_Port, g_Pin, SET);
-	}
+
+void turnOnAll(){
+    HAL_GPIO_WritePin(GPIOA,
+                      GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 |
+                      GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11 |
+                      GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15,
+                      GPIO_PIN_SET);
 }
-void display7SEG2(int num){
-	if (num == 0) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET); // a
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET); // b
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET); // c
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET); // d
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, RESET); // e
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, RESET); // f
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, SET);   // g
+//-------------------------------------------------------------------
+// Exercise 8: Implement a function to turn on a specific LED.
+//-------------------------------------------------------------------
+/**
+  * @brief  Bật một đèn LED tại vị trí được chỉ định.
+  * @param  num: Số từ 0 đến 11 tương ứng với vị trí trên đồng hồ.
+  * @note   Sử dụng mảng led_pins để lấy chân GPIO tương ứng.
+  *         GPIO_PIN_RESET sẽ đưa chân về mức thấp, bật LED.
+  * @retval None
+  */
+void setNumberOnClock(int num) {
+    if (num >= 0 && num < 12) { // Kiểm tra đầu vào hợp lệ
+        HAL_GPIO_WritePin(GPIOA, led_pins[num], GPIO_PIN_SET);
+    }
+}
+
+//-------------------------------------------------------------------
+// Exercise 9: Implement a function to turn off a specific LED.
+//-------------------------------------------------------------------
+/**
+  * @brief  Tắt một đèn LED tại vị trí được chỉ định.
+  * @param  num: Số từ 0 đến 11 tương ứng với vị trí trên đồng hồ.
+  * @note   Sử dụng mảng led_pins để lấy chân GPIO tương ứng.
+  *         GPIO_PIN_SET sẽ đưa chân lên mức cao, tắt LED.
+  * @retval None
+  */
+void clearNumberOnClock(int num) {
+    if (num >= 0 && num < 12) { // Kiểm tra đầu vào hợp lệ
+        HAL_GPIO_WritePin(GPIOA, led_pins[num], GPIO_PIN_RESET);
+    }
+}
+
+//-------------------------------------------------------------------
+// Report 2: Implement a simple program to test the connection.
+//-------------------------------------------------------------------
+/**
+  * @brief  Chạy chương trình kiểm tra, bật lần lượt từng LED.
+  * @note   Hàm này sẽ chạy vô tận, mỗi LED sáng trong 200ms.
+  * @retval None
+  */
+void run_led_test() {
+    for (int i = 0; i < 12; i++) {
+        clearAllClock(); // Xóa trạng thái cũ
+        setNumberOnClock(i); // Bật LED hiện tại
+        HAL_Delay(200); // Chỉ có 1 lệnh delay ở đây
+    }
+}
+
+//-------------------------------------------------------------------
+// Exercise 10: Integrate the whole system to display a clock.
+//-------------------------------------------------------------------
+/**
+  * @brief  Chạy mô phỏng đồng hồ analog.
+  * @note   Cập nhật và hiển thị kim giờ, phút, giây mỗi giây.
+  *         Chỉ có 3 đèn LED sáng tại một thời điểm.
+  * @retval None
+  */
+void ex6(){
+	static int test = 0;
+	HAL_GPIO_WritePin(GPIOA, led_pins[test], GPIO_PIN_SET);
+	test++;
+	if (test >= 12){
+		test = 0;
 	}
-	else if (num == 1) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, SET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, SET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, SET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, SET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, SET);
+	HAL_Delay(1000);
+}
+void ex7(){
+	static int test = 0;
+	static int count = 0;
+	HAL_GPIO_WritePin(GPIOA, led_pins[test], GPIO_PIN_SET);
+	test++;
+	count++;
+	if (test >= 12){
+		test = 0;
+
 	}
-	else if (num == 2) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, SET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, RESET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, SET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
+	if (count >= 20){
+		count = 0;
+		clearAllClock();
 	}
-	else if (num == 3) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, SET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, SET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
+	HAL_Delay(200);
+
+}
+void ex8(){
+	static int count = 0;
+
+	setNumberOnClock(count);
+	count++;
+	if (count >= 12){
+		count = 0;
 	}
-	else if (num == 4) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, SET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, SET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, SET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, RESET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
+	HAL_Delay(200);
+}
+void ex9(){
+	static int count = 0;
+	turnOnAll();
+	clearNumberOnClock(count);
+	count++;
+	if(count >= 12){
+		count = 0;
+		turnOnAll();
 	}
-	else if (num == 5) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, SET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, SET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, RESET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
-	}
-	else if (num == 6) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, SET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, RESET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, RESET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
-	}
-	else if (num == 7) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, SET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, SET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, SET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, SET);
-	}
-	else if (num == 8) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, RESET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, RESET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
-	}
-	else if (num == 9) {
-		HAL_GPIO_WritePin(a2_GPIO_Port, a2_Pin, RESET);
-		HAL_GPIO_WritePin(b2_GPIO_Port, b2_Pin, RESET);
-		HAL_GPIO_WritePin(c2_GPIO_Port, c2_Pin, RESET);
-		HAL_GPIO_WritePin(d2_GPIO_Port, d2_Pin, RESET);
-		HAL_GPIO_WritePin(e2_GPIO_Port, e2_Pin, SET);
-		HAL_GPIO_WritePin(f2_GPIO_Port, f2_Pin, RESET);
-		HAL_GPIO_WritePin(g2_GPIO_Port, g2_Pin, RESET);
-	}
+	HAL_Delay(200);
+
+}
+void Ex6_7_8_9_10() {
+    // Sử dụng 'static' để các biến này giữ giá trị của chúng sau mỗi lần gọi hàm
+    // (trong trường hợp này là sau mỗi vòng lặp của while(1))
+    static int hour = 0, minute = 0, second = 0;
+
+    // 1. Xóa tất cả các LED trước khi vẽ lại kim mới
+    clearAllClock();
+
+    // 2. Hiển thị 3 kim đồng hồ
+    // Kim giờ: hour trực tiếp là vị trí (0-11)
+    setNumberOnClock(hour);
+    // Kim phút: minute/5 để quy đổi từ 0-59 về 0-11
+    setNumberOnClock(minute / 5);
+    // Kim giây: second/5 để quy đổi từ 0-59 về 0-11
+    setNumberOnClock(second / 5);
+
+    // 3. Chờ 1 giây
+    HAL_Delay(10);
+
+    // 4. Cập nhật thời gian cho lần lặp tiếp theo
+    second++;
+    if (second >= 60) {
+        second = 0;
+        minute++;
+    }
+    if (minute >= 60) {
+        minute = 0;
+        hour++;
+    }
+    if (hour >= 12) {
+        hour = 0;
+    }
 }
 /* USER CODE END 4 */
 
