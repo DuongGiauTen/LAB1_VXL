@@ -1,6 +1,4 @@
-Bạn có thể tham khảo mục README mẫu dưới đây, mình viết ngắn gọn và rõ ràng để phù hợp cho các lab:
 
----
 
 # README
 
