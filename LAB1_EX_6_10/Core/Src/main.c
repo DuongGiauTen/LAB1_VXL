@@ -56,7 +56,7 @@ void setNumberOnClock(int num);
 void clearNumberOnClock(int num);
 void run_led_test();
 void turnOnAll();
-void Ex6_7_8_9_10();
+void Ex10();
 void ex6();
 void ex7();
 void ex8();
@@ -194,19 +194,20 @@ static void MX_GPIO_Init(void)
 // Mảng hằng số để ánh xạ số từ 0-11 tới các chân GPIO từ PA4-PA15
 // Cách này giúp code gọn gàng, không cần dùng if hoặc switch-case
 const uint16_t led_pins[12] = {
-    GPIO_PIN_4,  // Vị trí 0 (12 giờ)
-    GPIO_PIN_5,  // Vị trí 1
-    GPIO_PIN_6,  // Vị trí 2
-    GPIO_PIN_7,  // Vị trí 3
-    GPIO_PIN_8,  // Vị trí 4
-    GPIO_PIN_9,  // Vị trí 5
-    GPIO_PIN_10, // Vị trí 6
-    GPIO_PIN_11, // Vị trí 7
-    GPIO_PIN_12, // Vị trí 8
-    GPIO_PIN_13, // Vị trí 9
-    GPIO_PIN_14, // Vị trí 10
-    GPIO_PIN_15  // Vị trí 11
+    GPIO_PIN_4,  // Position 0 (12 o'clock)
+    GPIO_PIN_5,  // Position 1 (1 o'clock)
+    GPIO_PIN_6,  // Position 2 (2 o'clock)
+    GPIO_PIN_7,  // Position 3 (3 o'clock)
+    GPIO_PIN_8,  // Position 4 (4 o'clock)
+    GPIO_PIN_9,  // Position 5 (5 o'clock)
+    GPIO_PIN_10, // Position 6 (6 o'clock)
+    GPIO_PIN_11, // Position 7 (7 o'clock)
+    GPIO_PIN_12, // Position 8 (8 o'clock)
+    GPIO_PIN_13, // Position 9 (9 o'clock)
+    GPIO_PIN_14, // Position 10 (10 o'clock)
+    GPIO_PIN_15  // Position 11 (11 o'clock)
 };
+
 
 //-------------------------------------------------------------------
 // Exercise 7: Implement a function to turn off all 12 LEDs.
@@ -337,26 +338,28 @@ void ex9(){
 	HAL_Delay(200);
 
 }
-void Ex6_7_8_9_10() {
-    // Sử dụng 'static' để các biến này giữ giá trị của chúng sau mỗi lần gọi hàm
-    // (trong trường hợp này là sau mỗi vòng lặp của while(1))
+void Ex10() {
+    // Use 'static' so these variables retain their values between function calls
+    // (in this case, between iterations of the while(1) loop)
     static int hour = 0, minute = 0, second = 0;
 
-    // 1. Xóa tất cả các LED trước khi vẽ lại kim mới
+    // 1. Clear all LEDs before drawing the new hands
     clearAllClock();
 
-    // 2. Hiển thị 3 kim đồng hồ
-    // Kim giờ: hour trực tiếp là vị trí (0-11)
+    // 2. Display the three clock hands
+    // Hour hand: `hour` already maps to positions 0-11
     setNumberOnClock(hour);
-    // Kim phút: minute/5 để quy đổi từ 0-59 về 0-11
+    // Minute hand: divide by 5 to convert 0-59 -> 0-11
     setNumberOnClock(minute / 5);
-    // Kim giây: second/5 để quy đổi từ 0-59 về 0-11
+    // Second hand: divide by 5 to convert 0-59 -> 0-11
     setNumberOnClock(second / 5);
 
-    // 3. Chờ 1 giây
+    // 3. Wait for a short period
+    // NOTE: HAL_Delay(10) delays ~10 milliseconds. If you intend to wait 1 second,
+    // use HAL_Delay(1000) instead.
     HAL_Delay(10);
 
-    // 4. Cập nhật thời gian cho lần lặp tiếp theo
+    // 4. Update time for the next iteration
     second++;
     if (second >= 60) {
         second = 0;
@@ -370,6 +373,7 @@ void Ex6_7_8_9_10() {
         hour = 0;
     }
 }
+
 /* USER CODE END 4 */
 
 /**
